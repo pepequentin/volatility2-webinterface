@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Progress</title>
+    <style>
+        #progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Analyzing Dump: {{ dump_path }}</h1>
+    <p>Current step: <span id="current-step">0</span> out of <span id="total-steps">0</span></p>
+    
+    <!-- Barre de progression -->
+    <div id="progress-bar-container">
+        <div id="progress-bar">0%</div>
+    </div>
+
+    <script>
+        var dumpId = "{{ dump_id }}";
+
+        var interval = setInterval(function() {
+            fetch(`/check_progress/${dumpId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        clearInterval(interval);
+                        alert(data.error);
+                        window.location.href = '/';
+                    } else {
+                        document.getElementById('current-step').innerText = data.step;
+                        document.getElementById('total-steps').innerText = data.total_steps;
+
+                        var progressPercent = Math.round((data.step / data.total_steps) * 100);
+                        document.getElementById('progress-bar').style.width = progressPercent + '%';
+                        document.getElementById('progress-bar').innerText = progressPercent + '%';
+
+                        if (data.finished) {
+                            clearInterval(interval);
+                            window.location.href = `/analyze_results/${dumpId}`;
+                        }
+                    }
+                });
+        }, 2000); // Vérifie toutes les 2 secondes
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+.tabs {
+    overflow: hidden;
+    background-color: #f1f1f1;
+  }
+  
+  .tablink {
+    background-color: #555;
+    color: white;
+    padding: 14px 16px;
+    text-align: center;
+    float: left;
+    width: 33.33%;
+    cursor: pointer;
+  }
+  
+  .tablink:hover {
+    background-color: #777;
+  }
+  
+  .tabcontent {
+    display: none;
+    padding: 20px;
+  }
+  
+  .tabcontent h3 {
+    margin-top: 0;
+  }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+pre {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow-x: auto;
+}

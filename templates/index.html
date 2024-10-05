@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volatility Dump Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Styles pour le modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px 0;
+        }
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Volatility Dump Manager</h1>
+
+    <!-- Liste des dumps -->
+    <ul>
+        {% for dump in dumps %}
+            <li>
+                {{ dump[1] }} - {% if dump[2] %}Analyzed{% else %}Not Analyzed{% endif %}
+                <button onclick="removeDump('{{ dump[0] }}')">x</button>
+                {% if not dump[2] %}
+                    <button onclick="startAnalysis('{{ dump[0] }}')">Analyze</button>
+                {% else %}
+                    <button onclick="viewResults('{{ dump[0] }}')">View Results</button>
+                {% endif %}
+            </li>
+        {% else %}
+            <p>No dumps selected yet.</p>
+        {% endfor %}
+    </ul>
+
+    <button id="select-dump-btn">Select Dump</button>
+
+    <!-- Le Modal pour sélectionner un dump -->
+    <div id="select-dump-modal" class="modal">
+      <!-- Contenu du Modal -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Select Dump File</h2>
+        <form id="select-dump-form" enctype="multipart/form-data">
+            <label for="dump_file">Select Dump File:</label>
+            <input type="file" id="dump_file" name="dump_file" accept=".dmp,.bin,.raw,.mem" required>
+            <br><br>
+            <button type="submit">Add Dump</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+        // Obtenir le modal
+        var modal = document.getElementById("select-dump-modal");
+
+        // Obtenir le bouton qui ouvre le modal
+        var btn = document.getElementById("select-dump-btn");
+
+        // Obtenir l'élément <span> qui ferme le modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Quand l'utilisateur clique sur le bouton, ouvrir le modal 
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Quand l'utilisateur clique sur <span> (x), fermer le modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Quand l'utilisateur clique n'importe où en dehors du modal, fermer le modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Gérer la soumission du formulaire
+        document.getElementById('select-dump-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch('/select_dump', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                    modal.style.display = "none";
+                    location.reload();
+                } else {
+                    alert("Failed to add dump.");
+                }
+            });
+        });
+
+        // Fonction pour supprimer un dump
+        function removeDump(dumpId) {
+            fetch(`/remove_dump/${dumpId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    }
+                });
+        }
+
+        // Fonction pour démarrer l'analyse d'un dump
+        function startAnalysis(dumpId) {
+            window.location.href = `/start_analysis/${dumpId}`;
+        }
+
+        // Fonction pour voir les résultats d'un dump
+        function viewResults(dumpId) {
+            window.location.href = `/analyze_results/${dumpId}`;
+        }
+    </script>
+</body>
+</html>
