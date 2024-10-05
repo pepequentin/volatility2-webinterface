@@ -89,7 +89,7 @@ Once a dump is selected, you will see it listed on the main page. Click **Analyz
 ### 3. View Results
 When the analysis completes, you will be redirected to the results page where each Volatility plugin result is displayed in its own tab.
 
-![Analysis Results Screenshot](screenshots/analysis_results.png)
+![Analysis Results](https://github.com/user-attachments/assets/b3883d3c-60ee-4f34-90e8-df069dd93df4)
 
 ## Plugins
 The following Volatility plugins are executed in parallel:
