@@ -77,12 +77,14 @@ volatility_interface/
 ### 1. Select a Memory Dump
 On the main page, click on the **Select Dump** button to open a popup. Choose the memory dump file (`.dmp`, `.bin`, `.raw`, `.mem`) you want to analyze.
 
-![Select Dump Screenshot](screenshots/select_dump.png)
+![select_dump](https://github.com/user-attachments/assets/856af797-8868-4f93-8ea2-9d721bc1d781)
+
 
 ### 2. Start the Analysis
 Once a dump is selected, you will see it listed on the main page. Click **Analyze** to start the analysis. A progress page will open to show the status of the analysis.
 
-![Progress Screenshot](screenshots/progress_bar.png)
+![Progress Screenshot](https://github.com/user-attachments/assets/0527944f-d99c-4217-8f9b-cf4ef5b1b181)
+![Uploading image](https://github.com/user-attachments/assets/506781b7-72b9-4e2b-9744-525307fd96cf)
 
 ### 3. View Results
 When the analysis completes, you will be redirected to the results page where each Volatility plugin result is displayed in its own tab.
