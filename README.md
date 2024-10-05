@@ -14,7 +14,7 @@ This project provides a web-based interface to analyze memory dump files using t
 1. **Python 3.x**
    Ensure you have Python installed. You can download it [here](https://www.python.org/downloads/).
 2. **Volatility Framework** (Executable)
-   - Download **Volatility3** from [here](https://github.com/volatilityfoundation/volatility3).
+   - Download **Volatility2** from [here](https://github.com/volatilityfoundation/volatility2).
    - Make sure the `volatility.exe` executable is accessible in your environment's `PATH`. You can verify this by running:
      ```bash
      volatility.exe -h
